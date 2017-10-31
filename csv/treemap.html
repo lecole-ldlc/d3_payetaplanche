@@ -60,7 +60,7 @@ svg {
     	.round(true);
 
   	// Load data
-    d3.csv("data_task_10000.csv", function(data){
+    d3.csv("data_task_10.csv", function(data){
  			// Convert our data structure into a tree structure
       var root = d3.hierarchy({
         values: nest.entries(data)
@@ -69,9 +69,9 @@ svg {
       .eachBefore(function(d) {
         d.data.id = (d.parent ? d.parent.data.id + "." : "") + (d.data.key ? d.data.key : ""); })
       // This is the value that will be used to draw the rectangles
-      .sum(function(d) { if (d.value) {return d.value.total_time;} })
+      .sum(function(d) { if (d.value) {return d.value.total_cpt;} })
       // This is to display first the bigger rectangles
-      .sort(function(a, b) { return b.value.total_time - a.value.total_time; });
+      .sort(function(a, b) { return b.value.total_time - a.value.total_cpt; });
       //console.log(root)
 
       // Do generate the treemap
