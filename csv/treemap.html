@@ -35,6 +35,8 @@
 <select id="user" onchange="refresh_treemap();">
     <option value="All">All</option>
     <option value="Natasha">Natasha</option>
+    <option value="Mike">Mike</option>
+    <option value="Joe">Joe</option>
 </select>
 <select id="dataset" onchange="refresh_treemap();">
     <option value="data_task_10.csv">10</option>
@@ -44,6 +46,11 @@
 </select>
 <br/>
 <svg id="treemap" width="960" height="400"></svg>
+<br/>
+<svg id="barchart1" width="960" height="400"></svg>
+<br/>
+<svg id="barchart2" width="960" height="400"></svg>
+
 <div id="legend"></div>
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.2.1.js"
@@ -218,6 +225,175 @@
         });
     }
     refresh_treemap();
+    // Chart initialization
+    function refresh_barchart(element) {
+        var selected_user = $('#user').val();
+        var dataset = $('#dataset').val();
+        console.log(dataset);
+        console.log(selected_user);
+        var svg = d3.select(element),
+                margin = {top: 20, right: 20, bottom: 30, left: 40},
+                width = +svg.attr("width") - margin.left - margin.right,
+                height = +svg.attr("height") - margin.top - margin.bottom,
+                g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+        // X axis
+        var x = d3.scaleBand()
+                .rangeRound([0, width])
+                .paddingInner(0.1);
+
+        // y axis
+        var y = d3.scaleLinear()
+                .rangeRound([height, 0]);
+
+        //load data
+        d3.csv(dataset, function (data_full) {
+            //console.log(data);
+
+            // data complet
+            data = [];
+            data_full.forEach(function (d) {
+                if (d.who == selected_user || selected_user == 'All') {
+                    data.push(d);
+                }
+            });
+            // Group by status
+            var nested_data = d3.nest()
+                    .key(function (d) {
+                        return d.status;
+                    })
+                    .entries(data);
+
+            //console.log(nested_data);
+
+            // Color scale
+            var z = d3.scaleOrdinal(d3.schemeCategory10);
+
+            // Set domains of axes scales
+            x.domain(nested_data.map(function (d) {
+                return d.key;
+            }));
+            y.domain([0, d3.max(nested_data, function (d) {
+                return d.values.length;
+            })]);
+            z.domain(nested_data.map(function (d) {
+                return d.key;
+            }))
+
+            // Draw rect
+            g.selectAll("rect")
+                    .data(nested_data)
+                    .enter().append("rect")
+                    .attr("x", function (d) {
+                        return x(d.key);
+                    })
+                    .attr("y", function (d) {
+                        return y(d.values.length);
+                    })
+                    .attr("height", function (d) {
+                        return height - y(d.values.length);
+                    })
+                    .attr("width", x.bandwidth())
+                    //.attr("fill", "red")
+                    .attr("fill", function (d, i) {
+                        return z(d.key);
+                    });
+
+            // Draw x axis
+            g.append("g")
+                    .attr("class", "axis")
+                    .attr("transform", "translate(0," + height + ")")
+                    .call(d3.axisBottom(x));
+
+            // Draw y axis
+            g.append("g")
+                    .attr("class", "axis")
+                    .call(d3.axisLeft(y).ticks(null, "s"))
+        });
+    }
+    ;
+    refresh_barchart("#barchart1");
+    // Chart initialization
+    function refresh_barchart(element) {
+        var selected_user = $('#user').val();
+        var dataset = $('#dataset').val();
+        console.log(dataset);
+        console.log(selected_user);
+        var svg = d3.select(element),
+                margin = {top: 20, right: 20, bottom: 30, left: 40},
+                width = +svg.attr("width") - margin.left - margin.right,
+                height = +svg.attr("height") - margin.top - margin.bottom,
+                g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+        // X axis
+        var x = d3.scaleBand()
+                .rangeRound([0, width])
+                .paddingInner(0.1);
+
+        // y axis
+        var y = d3.scaleLinear()
+                .rangeRound([height, 0]);
+
+        //load data
+        d3.csv(dataset, function (data_full) {
+            //console.log(data);
+
+            // Group by status
+            var nested_data = d3.nest()
+                    .key(function (d) {
+                        return d.status;
+                    })
+                    .entries(data);
+
+            //console.log(nested_data);
+
+            // Color scale
+            var z = d3.scaleOrdinal(d3.schemeCategory10);
+
+            // Set domains of axes scales
+            x.domain(nested_data.map(function (d) {
+                return d.key;
+            }));
+            y.domain([0, d3.max(nested_data, function (d) {
+                return d.values.length;
+            })]);
+            z.domain(nested_data.map(function (d) {
+                return d.key;
+            }))
+
+            // Draw rect
+            g.selectAll("rect")
+                    .data(nested_data)
+                    .enter().append("rect")
+                    .attr("x", function (d) {
+                        return x(d.key);
+                    })
+                    .attr("y", function (d) {
+                        return y(d.values.length);
+                    })
+                    .attr("height", function (d) {
+                        return height - y(d.values.length);
+                    })
+                    .attr("width", x.bandwidth())
+                    //.attr("fill", "red")
+                    .attr("fill", function (d, i) {
+                        return z(d.key);
+                    });
+
+            // Draw x axis
+            g.append("g")
+                    .attr("class", "axis")
+                    .attr("transform", "translate(0," + height + ")")
+                    .call(d3.axisBottom(x));
+
+            // Draw y axis
+            g.append("g")
+                    .attr("class", "axis")
+                    .call(d3.axisLeft(y).ticks(null, "s"))
+        });
+    }
+    ;
+    refresh_barchart("#barchart2")
 </script>
 </body>
 </html>
