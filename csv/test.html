@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Test</title>
+    <style>
+
+        .axis .domain {
+            display: none;
+        }
+
+        form {
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        }
+
+        svg {
+            font: 10px sans-serif;
+        }
+
+        .legend {
+            font-size: 12px;
+        }
+
+        rect {
+            stroke-width: 2;
+        }
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+</head>
+
+<body>
+
+  <form>
+    <div id="option">
+        <select id="user" onchange="refresh_charts();">
+            <option value="All">All</option>
+            <option value="Natasha">Natasha</option>
+            <option value="Mike">Mike</option>
+            <option value="Joe">Joe</option>
+        </select>
+    </div>
+  </form>
+</body>
