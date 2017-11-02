@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <title>Treemap</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css"> -->
     <style>
 
         .axis .domain {
@@ -27,44 +27,46 @@
         }
     </style>
 </head>
-<div id="option">
-    <select id="user" onchange="refresh_charts();">
-        <option value="All">All</option>
-        <option value="Natasha">Natasha</option>
-        <option value="Mike">Mike</option>
-        <option value="Joe">Joe</option>
-    </select>
-</div>
-</form>
-<div id="option">
-        <select class="dataset" id="dataset" onchange="refresh_charts();">
-            <option value="data_task_10.csv">10</option>
-            <option value="data_task_100.csv">100</option>
-            <option value="data_task_1000.csv">1000</option>
-            <option value="data_task_10000.csv">10000</option>
+
+<body>
+  <form>
+    <div id="option">
+        <select id="user" onchange="refresh_charts();">
+            <option value="All">All</option>
+            <option value="Natasha">Natasha</option>
+            <option value="Mike">Mike</option>
+            <option value="Joe">Joe</option>
         </select>
-</div>
-</div>
-<div class="row">
-    <div class="col-6">
-        <svg id="treemap" width="960" height="400"></svg>
     </div>
-    <div class="col-6">
-        <svg id="barchart1" width="960" height="400"></svg>
-    </div>
-</div>
-<div class="rwo">
-    <svg id="barchart2" width="960" height="400"></svg>
-</div>
-</div>
+  </form>
+  <div id="option">
+          <select class="dataset" id="dataset" onchange="refresh_charts();">
+              <option value="data_task_10.csv">10</option>
+              <option value="data_task_100.csv">100</option>
+              <option value="data_task_1000.csv">1000</option>
+              <option value="data_task_10000.csv">10000</option>
+          </select>
+  </div>
+
+  <div class="row">
+      <div class="col-6">
+          <svg id="treemap" width="960" height="400"></svg>
+      </div>
+      <div class="col-6">
+          <svg id="barchart1" width="960" height="400"></svg>
+      </div>
+  </div>
+  <div class="rwo">
+      <svg id="barchart2" width="960" height="400"></svg>
+  </div>
 </body>
+
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.2.1.js"
         integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
         crossorigin="anonymous"></script>
 
 <script>
-
     //on change update users.
     function refresh_charts() {
         $('#barchart1').html('');
@@ -239,6 +241,7 @@
         });
         refresh_treemap();
         // Chart initialization
+
         function refresh_barchart(element) {
             var selected_user = $('#user').val();
             var dataset = $('#dataset').val();
@@ -406,6 +409,7 @@
             }
             ;
             refresh_barchart("#barchart2")
+        }
         }
 </script>
 
