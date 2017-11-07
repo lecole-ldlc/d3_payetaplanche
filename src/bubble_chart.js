@@ -108,7 +108,7 @@ function bubbleChart() {
     var myNodes = rawData.map(function (d) {
       return {
         id: d.id,
-        radius: radiusScale(+d.time),
+        radius: radiusScale(+d.time/3),
         value: +d.time,
         name: d.name,
         org: d.who,
@@ -378,7 +378,7 @@ function addCommas(nStr) {
 }
 
 // Load the data.
-d3.csv('data/data_task_100.csv', display);
+d3.csv('data/data_task_10.csv', display);
 
 // setup the buttons.
 setupButtons();
