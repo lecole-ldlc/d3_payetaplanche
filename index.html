@@ -1,19 +1,395 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+    <title>Paye ta Planche</title>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+</head>
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
-  </head>
-  <body>
-    <h1>Ceci est mon titre</h1>
 
-    <!-- jQuery first, then Tether, then Bootstrap JS. -->
-    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
-  </body>
+<body>
+
+<div class="container" style="text-align: center">
+    <h1>Paye ta Planche</h1>
+
+    <p>Jeu de Données</p>
+    <div>
+        <form>
+            <select onchange="regen();" class="dataset" id="dataset">
+                <option value="data/data_task_10.csv" selected="selected">10 Taches</option>
+                <option value="data/data_task_100.csv">100 Taches</option>
+                <option value="data/data_task_1000.csv">1 000 Taches</option>
+                <option value="data/data_task_10000.csv">10 000 Taches</option>
+            </select>
+            <label>Séléction du jeu de données</label>
+
+        </form>
+    </div>
+    <form>
+
+        <p>Utilisateurs</p>
+        <div >
+            <select onchange="regen();" class="user" id="user">
+                <option value="All" selected="selected">Tous</option>
+                <option value="Mike">Mike</option>
+                <option value="Natasha">Natasha</option>
+                <option value="Joe">Joe</option>
+            </select>
+            <label>Séléction de l'utilisateur</label>
+        </div>
+
+        <h2>Bar charts</h2>
+
+        <div class="row">
+            <div class="col s6">
+                <p>bar chart 1</p>
+                <svg width="300" height="300" id="barchart1"></svg>
+
+
+            </div>
+
+            <div class="col s6">
+                <p>bar chart 2</p>
+                <svg width="300" height="300" id="barchart2"></svg>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col s12">
+                <h2>Treemap</h2>
+                <style>
+                    .axis .domain {
+                        display: none;
+                    }
+
+                    form {
+                        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+                    }
+
+                    svg {
+                        font: 10px sans-serif;
+                    }
+
+                    .legend {
+                        font-size: 12px;
+                    }
+
+                    rect {
+                        stroke-width: 2;
+                    }
+                </style>
+                <svg id="treemap" width="960" height="400"></svg>
+
+
+            </div>
+        </div>
+		
+		<div class="row">
+            <div class="col s12">
+                <h2>Circle Packing</h2>
+                <style>
+                    circle {
+					  fill: rgb(31, 119, 180);
+					  fill-opacity: .25;
+					  stroke: rgb(31, 119, 180);
+					  stroke-width: 1px;
+					}
+
+					.leaf circle {
+					  fill: #ff7f0e;
+					  fill-opacity: 1;
+					}
+
+					text {
+					  font: 10px sans-serif;
+					  text-anchor: middle;
+					}
+                </style>
+                <svg id="circlepacking" width="960" height="400"></svg>
+
+
+            </div>
+        </div>
+
+</div>
+
+</body>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+
+
+<script>
+    function draw_barchart(data, element, total) {
+        // Chart initialization
+        //var user = $('#user').val();
+        $(element).html("");
+        var svg = d3.select(element),
+            margin = {top: 20, right: 20, bottom: 30, left: 40},
+            width = +svg.attr("width") - margin.left - margin.right,
+            height = +svg.attr("height") - margin.top - margin.bottom,
+            g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+        // X axis
+        var x = d3.scaleBand()
+            .rangeRound([0, width])
+            .paddingInner(0.1);
+        // y axis
+        var y = d3.scaleLinear()
+            .rangeRound([height, 0]);
+        //load data
+        if (!total) {
+            // Group by status
+            var nested_data = d3.nest()
+                .key(function (d) {
+                    return d.status;
+                })
+                .entries(data);
+        } else {
+            // Group by priority
+            var nested_data = d3.nest()
+                .key(function (d) {
+                    return d.priority;
+                })
+                .entries(data);
+        }
+        //console.log(nested_data);
+        // Color scale
+        var z = d3.scaleOrdinal(d3.schemeCategory10);
+        // Set domains of axes scales
+        x.domain(nested_data.map(function (d) {
+            return d.key;
+        }));
+        y.domain([0, d3.max(nested_data, function (d) {
+            return d.values.length;
+        })]);
+        z.domain(nested_data.map(function (d) {
+            return d.key;
+        }))
+        // Draw rect
+        g.selectAll("rect")
+            .data(nested_data)
+            .enter().append("rect")
+            .attr("x", function (d) {
+                return x(d.key);
+            })
+            .attr("y", function (d) {
+                return y(d.values.length);
+            })
+            .attr("height", function (d) {
+                return height - y(d.values.length);
+            })
+            .attr("width", x.bandwidth())
+            //.attr("fill", "red")
+            .attr("fill", function (d, i) {
+                return z(d.key);
+            })
+        // Draw x axis
+        g.append("g")
+            .attr("class", "axis")
+            .attr("transform", "translate(0," + height + ")")
+            .call(d3.axisBottom(x));
+        // Draw y axis
+        g.append("g")
+            .attr("class", "axis")
+            .call(d3.axisLeft(y).ticks(null, "s"))
+    }
+
+    function generate_tree(data, element) {
+        // Initialize SV
+        var user = $('#user').val();
+        $("#treemap").html("");
+        var svg = d3.select(element),
+            margin = {top: 20, right: 20, bottom: 30, left: 40},
+            width = +svg.attr("width") - margin.left - margin.right,
+            height = +svg.attr("height") - margin.top - margin.bottom,
+            g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+        // Color scale for categories
+        var color = d3.scaleOrdinal(d3.schemeCategory10);
+        // Prepare aggregation
+        var nest = d3.nest()
+            .key(function (d) {
+                return d.priority;
+            }) // First we aggregate by prority
+            .key(function (d) {
+                return d.status;
+            }) // Then by status
+            .rollup(function (leaves) {
+                return {
+                    "total_cpt": leaves.length, // Compute the number of tasks in each groupe
+                    // Compute the total time associated with the tasks in this group
+                    "total_time": d3.sum(leaves, function (d) {
+                        return parseFloat(d.time);
+                    })
+                }
+            });
+        // Prepare treemap
+        var treemap = d3.treemap()
+            .size([width, height])
+            .padding(1)
+            .round(true);
+        var root = d3.hierarchy({
+            values: nest.entries(data)
+        }, function (d) {
+            return d.values;
+        })
+        // This create a unique identifier of each leaf
+            .eachBefore(function (d) {
+                d.data.id = (d.parent ? d.parent.data.id + "." : "") + (d.data.key ? d.data.key : "");
+            })
+            // This is the value that will be used to draw the rectangles
+            .sum(function (d) {
+                if (d.value) {
+                    return d.value.total_time;
+                }
+            })
+            // This is to display first the bigger rectangles
+            .sort(function (a, b) {
+                return b.value.total_time - a.value.total_time;
+            });
+        //console.log(root)
+        // Do generate the treemap
+        treemap(root);
+        // Prepare each rectangle
+        var cell = g.selectAll("g")
+        // We do not draw the priority rectangles, only the leaves of the tree
+            .data(root.leaves())
+            .enter().append("g")
+            // Use x0 and y0 generated by the treemap function
+            .attr("transform", function (d) {
+                return "translate(" + d.x0 + "," + d.y0 + ")";
+            });
+        // Draw the rectangle
+        cell.append("rect")
+            .attr("id", function (d) {
+                return d.data.id;
+            })
+            .attr("width", function (d) {
+                return d.x1 - d.x0;
+            })
+            .attr("height", function (d) {
+                return d.y1 - d.y0;
+            })
+            // Use the parent attribute to set the color
+            .attr("fill", function (d) {
+                return color(d.parent.data.key);
+            });
+        // Draw the text (use a clipping path to deal with long strings)
+        cell.append("clipPath")
+            .attr("id", function (d) {
+                return "clip-" + d.data.id;
+            })
+            .append("use")
+            .attr("xlink:href", function (d) {
+                return "#" + d.data.id;
+            });
+        cell.append("text")
+            .attr("clip-path", function (d) {
+                return "url(#clip-" + d.data.id + ")";
+            })
+            .text(function (d) {
+                return d.data.key;
+            })
+            .attr("x", 4)
+            .attr("y", 10);
+        // Append a title (shown on mouse hover)
+        cell.append("title")
+            .text(function (d) {
+                return "Total time : " + d.data.value.total_time;
+            });
+        var heightL = 100;
+        var svgLeg = d3.select("#legend").append("svg")
+            .attr("width", width)
+            .attr("height", heightL)
+        // Draw the legend
+        var legendRectSize = 18;
+        var legendSpacing = 4;
+        var legend = svg.selectAll('.legend')
+            .data(color.domain())
+            .enter()
+            .append('g')
+            .attr('class', 'legend')
+            .attr('transform', function (d, i) {
+                var offset = 20 * color.domain().length / 2;
+                var horz = 30 + i * 100 + 10;
+                var vert = height + legendRectSize + 10;
+                //vert = 0;
+                //horz = 0;
+                return 'translate(' + horz + ',' + vert + ')';
+            });
+        // These are the rectangles
+        legend.append('rect')
+            .attr('width', legendRectSize)
+            .attr('height', legendRectSize)
+            .style('fill', color)
+            .style('stroke', color);
+        // These are the texts
+        legend.append('text')
+            .attr('x', legendRectSize + 5)
+            .attr('y', 10)
+            .text(function (d) {
+                return d
+            })
+    }
+	
+	function draw_circle(data,element){
+		$("#circlepacking").html("");
+		var svg = d3.select("svg"),
+			diameter = +svg.attr("width"),
+			g = svg.append("g").attr("transform", "translate(2,2)"),
+			format = d3.format(",d");
+
+		var pack = d3.pack()
+			.size([diameter - 4, diameter - 4]);
+
+		d3.json("flare.json", function(error, root) {
+		  if (error) throw error;
+
+		  root = d3.hierarchy(root)
+			  .sum(function(d) { return d.size; })
+			  .sort(function(a, b) { return b.value - a.value; });
+
+		  var node = g.selectAll(".node")
+			.data(pack(root).descendants())
+			.enter().append("g")
+			  .attr("class", function(d) { return d.children ? "node" : "leaf node"; })
+			  .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
+
+		  node.append("title")
+			  .text(function(d) { return d.data.name + "\n" + format(d.value); });
+
+		  node.append("circle")
+			  .attr("r", function(d) { return d.r; });
+
+		  node.filter(function(d) { return !d.children; }).append("text")
+			  .attr("dy", "0.3em")
+			  .text(function(d) { return d.data.name.substring(0, d.r / 3); });
+		});
+	
+	
+	
+	
+	}
+
+    function regen() {
+        d3.csv($("#dataset").val(), function (d) {
+            d.time = +d.time;
+            var user = $("#user").val();
+            if (d.who == user || user == 'All')
+                return d;
+        }, function (data) {
+            generate_tree(data, '#treemap');
+            draw_barchart(data, "#barchart1", true);
+            draw_barchart(data, "#barchart2", false);
+			draw_circle(data, "circlepacking");
+        });
+    }
+
+    $(document).ready(function () {
+        regen();
+        $('select').material_select();
+    });
+</script>
 </html>
