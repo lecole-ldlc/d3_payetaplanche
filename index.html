@@ -123,7 +123,7 @@
 
 
 <script>
-    function draw_barchart(data, element, total) {
+    function draw_barchart(data, element, chart) {
         // Chart initialization
         //var user = $('#user').val();
         $(element).html("");
@@ -140,7 +140,7 @@
         var y = d3.scaleLinear()
             .rangeRound([height, 0]);
         //load data
-        if (!total) {
+        if (!chart) {
             // Group by status
             var nested_data = d3.nest()
                 .key(function (d) {
@@ -383,7 +383,7 @@
             generate_tree(data, '#treemap');
             draw_barchart(data, "#barchart1", true);
             draw_barchart(data, "#barchart2", false);
-			draw_circle(data, "circlepacking");
+			draw_circle(data, "#circlepacking");
         });
     }
 
