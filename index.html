@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta charset="UTF-8">
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <title>Paye ta Planche</title>
-    <script src="https://d3js.org/d3.v4.min.js"></script>
-    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    
 </head>
 
 
@@ -14,9 +13,8 @@
 
 <div class="container" style="text-align: center">
     <h1>Paye ta Planche</h1>
-
-    <p>Jeu de Données</p>
-    <div class="form-group">
+<div class="row">
+    <div class="form-group col-xs-6">
         <form>
             <select onchange="regen();" class="form-control" id="dataset">
                 <option value="data/data_task_10.csv" selected="selected">10 Taches</option>
@@ -30,8 +28,7 @@
     </div>
     
 
-	<p>Utilisateurs</p>
-	<div class="form-group">
+	<div class="form-group col-xs-6">
 		<form>
 			<select onchange="regen();" class="form-control" id="user">
 				<option value="All" selected="selected">Tous</option>
@@ -42,19 +39,17 @@
 			<label>Séléction de l'utilisateur</label>
 		</form>
 	</div>
-	
-
+	</div>
+	<div class="container">
         <h2>Bar charts</h2>
-
+	
         <div class="row">
-            <div class="col">
+            <div class="col-xs-6">
                 <p>bar chart 1</p>
                 <svg width="300" height="300" id="barchart1"></svg>
-
-
             </div>
 
-            <div class="col">
+            <div class="col-xs-6">
                 <p>bar chart 2</p>
                 <svg width="300" height="300" id="barchart2"></svg>
             </div>
@@ -117,7 +112,7 @@
 
             </div>
         </div>
-
+	</div>
 </div>
 
 </body>
@@ -396,4 +391,12 @@
         $('select').material_select();
     });
 </script>
+
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="JS/D3.js"></script>
+
 </html>
