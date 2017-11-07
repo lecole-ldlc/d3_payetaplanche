@@ -19,16 +19,16 @@ function bubbleChart() {
   var center = { x: width / 2, y: height / 2 };
 
   var yearCenters = {
-    2008: { x: width / 3, y: height / 2 },
-    2009: { x: width / 2, y: height / 2 },
-    2010: { x: 2 * width / 3, y: height / 2 }
+    DONE: { x: width / 3, y: height / 2 },
+    DOING: { x: width / 2, y: height / 2 },
+    TODO: { x: 2 * width / 3, y: height / 2 }
   };
 
   // X locations of the year titles.
   var yearsTitleX = {
-    2008: 160,
-    2009: width / 2,
-    2010: width - 160
+    DONE: 160,
+    DOING: width / 2,
+    TODO: width - 160
   };
 
   // @v4 strength to apply to the position forces
@@ -93,7 +93,7 @@ function bubbleChart() {
   function createNodes(rawData) {
     // Use the max total_amount in the data as the max in the scale's domain
     // note we have to ensure the total_amount is a number.
-    var maxAmount = d3.max(rawData, function (d) { return +d.total_amount; });
+    var maxAmount = d3.max(rawData, function (d) { return +d.time; });
 
     // Sizes bubbles based on area.
     // @v4: new flattened scale names.
@@ -108,12 +108,12 @@ function bubbleChart() {
     var myNodes = rawData.map(function (d) {
       return {
         id: d.id,
-        radius: radiusScale(+d.total_amount),
-        value: +d.total_amount,
-        name: d.grant_title,
-        org: d.organization,
-        group: d.group,
-        year: d.start_year,
+        radius: radiusScale(+d.time),
+        value: +d.time,
+        name: d.name,
+        org: d.who,
+        priority: d.priority,
+        status: d.status,
         x: Math.random() * 900,
         y: Math.random() * 800
       };
@@ -161,8 +161,8 @@ function bubbleChart() {
     var bubblesE = bubbles.enter().append('circle')
       .classed('bubble', true)
       .attr('r', 0)
-      .attr('fill', function (d) { return fillColor(d.group); })
-      .attr('stroke', function (d) { return d3.rgb(fillColor(d.group)).darker(); })
+      .attr('fill', function (d) { return fillColor(d.priority); })
+      .attr('stroke', function (d) { return d3.rgb(fillColor(d.priority)).darker(); })
       .attr('stroke-width', 2)
       .on('mouseover', showDetail)
       .on('mouseout', hideDetail);
@@ -202,7 +202,7 @@ function bubbleChart() {
    * x force.
    */
   function nodeYearPos(d) {
-    return yearCenters[d.year].x;
+    return yearCenters[d.status].x;
   }
 
 
@@ -243,7 +243,7 @@ function bubbleChart() {
    * Hides Year title displays.
    */
   function hideYearTitles() {
-    svg.selectAll('.year').remove();
+    svg.selectAll('.status').remove();
   }
 
   /*
@@ -253,11 +253,11 @@ function bubbleChart() {
     // Another way to do this would be to create
     // the year texts once and then just hide them.
     var yearsData = d3.keys(yearsTitleX);
-    var years = svg.selectAll('.year')
+    var years = svg.selectAll('.status')
       .data(yearsData);
 
     years.enter().append('text')
-      .attr('class', 'year')
+      .attr('class', 'status')
       .attr('x', function (d) { return yearsTitleX[d]; })
       .attr('y', 40)
       .attr('text-anchor', 'middle')
@@ -280,7 +280,7 @@ function bubbleChart() {
                   addCommas(d.value) +
                   '</span><br/>' +
                   '<span class="name">Year: </span><span class="value">' +
-                  d.year +
+                  d.status +
                   '</span>';
 
     tooltip.showTooltip(content, d3.event);
@@ -292,7 +292,7 @@ function bubbleChart() {
   function hideDetail(d) {
     // reset outline
     d3.select(this)
-      .attr('stroke', d3.rgb(fillColor(d.group)).darker());
+      .attr('stroke', d3.rgb(fillColor(d.priority)).darker());
 
     tooltip.hideTooltip();
   }
@@ -305,7 +305,7 @@ function bubbleChart() {
    * displayName is expected to be a string and either 'year' or 'all'.
    */
   chart.toggleDisplay = function (displayName) {
-    if (displayName === 'year') {
+    if (displayName === 'status') {
       splitBubbles();
     } else {
       groupBubbles();
@@ -378,7 +378,7 @@ function addCommas(nStr) {
 }
 
 // Load the data.
-d3.csv('data/gates_money.csv', display);
+d3.csv('data/data_task_10000.csv', display);
 
 // setup the buttons.
 setupButtons();
