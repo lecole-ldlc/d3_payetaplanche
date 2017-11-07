@@ -16,9 +16,9 @@
     <h1>Paye ta Planche</h1>
 
     <p>Jeu de Données</p>
-    <div>
+    <div class="form-group">
         <form>
-            <select onchange="regen();" class="dataset" id="dataset">
+            <select onchange="regen();" class="form-control" id="dataset">
                 <option value="data/data_task_10.csv" selected="selected">10 Taches</option>
                 <option value="data/data_task_100.csv">100 Taches</option>
                 <option value="data/data_task_1000.csv">1 000 Taches</option>
@@ -28,18 +28,21 @@
 
         </form>
     </div>
-    <form>
+    
 
-        <p>Utilisateurs</p>
-        <div >
-            <select onchange="regen();" class="user" id="user">
-                <option value="All" selected="selected">Tous</option>
-                <option value="Mike">Mike</option>
-                <option value="Natasha">Natasha</option>
-                <option value="Joe">Joe</option>
-            </select>
-            <label>Séléction de l'utilisateur</label>
-        </div>
+	<p>Utilisateurs</p>
+	<div class="form-group">
+		<form>
+			<select onchange="regen();" class="form-control" id="user">
+				<option value="All" selected="selected">Tous</option>
+				<option value="Mike">Mike</option>
+				<option value="Natasha">Natasha</option>
+				<option value="Joe">Joe</option>
+			</select>
+			<label>Séléction de l'utilisateur</label>
+		</form>
+	</div>
+	
 
         <h2>Bar charts</h2>
 
