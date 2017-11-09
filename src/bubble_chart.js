@@ -333,7 +333,7 @@ function display(error, data) {
     console.log(error);
   }
 
-  myBubbleChart('#vis', data);
+  myBubbleChart(element, data);
 }
 
 /*
@@ -377,8 +377,6 @@ function addCommas(nStr) {
   return x1 + x2;
 }
 
-// Load the data.
-d3.csv('data/data_task_10.csv', display);
 
 // setup the buttons.
 setupButtons();
