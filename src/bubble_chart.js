@@ -94,11 +94,12 @@ function bubbleChart() {
     // Use the max total_amount in the data as the max in the scale's domain
     // note we have to ensure the total_amount is a number.
     var maxAmount = d3.max(rawData, function (d) { return +d.time; });
+	var maxValues = rawData.length
 
     // Sizes bubbles based on area.
     // @v4: new flattened scale names.
     var radiusScale = d3.scalePow()
-      .exponent(3)
+      .exponent(0.5)
       .range([2, 85])
       .domain([0, maxAmount]);
 
@@ -108,7 +109,7 @@ function bubbleChart() {
     var myNodes = rawData.map(function (d) {
       return {
         id: d.id,
-        radius: radiusScale(+d.time/(maxAmount)),
+        radius: radiusScale(+d.time/(maxValues)),
         value: +d.time,
         name: d.name,
         org: d.who,
