@@ -378,8 +378,8 @@ function addCommas(nStr) {
 }
 
 // Load the data.
-$(document).ready(function () {
-	d3.csv($("#dataset").val(), display);
-});
+
+
+
 // setup the buttons.
 setupButtons();

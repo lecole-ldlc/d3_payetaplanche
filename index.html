@@ -319,7 +319,12 @@
             })
     }
 	
+</script>
 
+<script src="src/tooltip.js"></script>
+<script src="src/bubble_chart.js"></script>
+
+<script>
 	
     function regen() {
         d3.csv($("#dataset").val(), function (d) {
@@ -331,7 +336,8 @@
             generate_tree(data, '#treemap');
             draw_barchart(data, "#barchart1", true);
             draw_barchart(data, "#barchart2", false);
-        });
+        },
+		display);
     }
 
     $(document).ready(function () {
@@ -339,8 +345,6 @@
         $('select').material_select();
     });
 </script>
-<script src="src/tooltip.js"></script>
-<script src="src/bubble_chart.js"></script>
 
 
 </html>
