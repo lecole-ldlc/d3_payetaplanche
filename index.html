@@ -320,6 +320,7 @@
     }
 	
 
+	function generate_bubble(data,element){
 	
 	src="src/tooltip.js"
 	
@@ -649,6 +650,17 @@
 
 	var myBubbleChart = bubbleChart();
 
+	/*
+	 * Function called once data is loaded from CSV.
+	 * Calls bubble chart function to display inside #vis div.
+	 */
+	function display(error, data) {
+	  if (error) {
+		console.log(error);
+	  }
+
+	  myBubbleChart(element, data);
+	}
 
 	/*
 	 * Sets up the layout buttons to allow for toggling between view modes.
@@ -691,11 +703,14 @@
 	  return x1 + x2;
 	}
 
+	// Load the data.
+	d3.csv($("#dataset").val(), display);
+
 	// setup the buttons.
 	setupButtons();
 
 	
-	
+	}
 	
     function regen() {
         d3.csv($("#dataset").val(), function (d) {
@@ -707,7 +722,7 @@
             generate_tree(data, '#treemap');
             draw_barchart(data, "#barchart1", true);
             draw_barchart(data, "#barchart2", false);
-			myBubbleChart("#vis", data);;
+			generate_bubble(data, '#vis');
         });
     }
 
