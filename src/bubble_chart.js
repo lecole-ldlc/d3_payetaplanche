@@ -332,8 +332,8 @@ function display(error, data) {
   if (error) {
     console.log(error);
   }
-
-  myBubbleChart('#vis', data);
+	$('#vis').html('');
+	myBubbleChart('#vis', data);
 }
 
 /*
