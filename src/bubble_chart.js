@@ -108,7 +108,7 @@ function bubbleChart() {
     var myNodes = rawData.map(function (d) {
       return {
         id: d.id,
-        radius: radiusScale(+d.time/(maxAmount*10)),
+        radius: radiusScale(+d.time/(maxAmount)),
         value: +d.time,
         name: d.name,
         org: d.who,

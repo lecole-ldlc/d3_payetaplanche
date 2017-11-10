@@ -88,8 +88,8 @@
             <div class="col-12">
                 <h2>Bubble</h2>
 				    <div id="toolbar">
-						<a id="all" class="button active">All Grants</a>
-						<a id="status" class="button">Grants By Year</a>
+						<a id="all" class="button active">Toutes les Tâches</a>
+						<a id="status" class="button">Tâches pas statut</a>
 					</div>
                 <div id="vis"></div>
 
@@ -183,7 +183,7 @@
     }
 
     function generate_tree(data, element) {
-        // Initialize SV
+        // Initialize SVG
         var user = $('#user').val();
         $("#treemap").html("");
         var svg = d3.select(element),
