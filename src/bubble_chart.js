@@ -98,8 +98,8 @@ function bubbleChart() {
     // Sizes bubbles based on area.
     // @v4: new flattened scale names.
     var radiusScale = d3.scalePow()
-      .exponent(-0.5)
-      .range([1, 20])
+      .exponent(3)
+      .range([2, 85])
       .domain([0, maxAmount]);
 
     // Use map() to convert raw data into node data.
@@ -108,7 +108,7 @@ function bubbleChart() {
     var myNodes = rawData.map(function (d) {
       return {
         id: d.id,
-        radius: radiusScale(+d.time),
+        radius: radiusScale(+d.time/(maxAmount*10)),
         value: +d.time,
         name: d.name,
         org: d.who,
