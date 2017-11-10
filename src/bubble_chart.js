@@ -277,7 +277,7 @@ function bubbleChart() {
     var content = '<span class="name">Nom: </span><span class="value">' +
                   d.name +
                   '</span><br/>' +
-                  '<span class="name">Temps: </span><span class="value">$' +
+                  '<span class="name">Temps: </span><span class="value">' +
                   addCommas(d.value) +
                   '</span><br/>' +
                   '<span class="name">Statut: </span><span class="value">' +
