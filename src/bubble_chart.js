@@ -25,9 +25,10 @@ function bubbleChart() {
   };
   
   var priorCenters = {
-    WISH: { x: width / 3, y: height / 2 },
-    COULD: { x: width / 2, y: height / 2 },
-    SHOULD: { x: 2 * width / 3, y: height / 2 }
+    WISH: { x: width / 4, y: height / 2 },
+    COULD: { x: width / 3, y: height / 2 },
+    SHOULD: { x: 2 * width / 2, y: height / 2 },
+	MUST:  { x: 2 * width / 3, y: height / 2 }
   };
 
   // X locations of the year titles.
@@ -38,9 +39,10 @@ function bubbleChart() {
   };
   
   var priorTitleX = {
-    WISH: 160,
-    COULD: width / 2,
-    SHOULD: width - 160
+    WISH: 110,
+    COULD: (width / 4)*2,
+    SHOULD: (width / 4)*3,
+	MUST: width - 110
   };
 
   // @v4 strength to apply to the position forces
