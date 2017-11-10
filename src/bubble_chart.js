@@ -27,7 +27,7 @@ function bubbleChart() {
   var priorCenters = {
     WISH: { x: width / 4, y: height / 2 },
     COULD: { x: width / 3, y: height / 2 },
-    SHOULD: { x: 2 * width / 2, y: height / 2 },
+    SHOULD: { x: width / 2, y: height / 2 },
 	MUST:  { x: 2 * width / 3, y: height / 2 }
   };
 
