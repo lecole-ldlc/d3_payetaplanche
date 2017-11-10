@@ -39,10 +39,10 @@ function bubbleChart() {
   };
   
   var priorTitleX = {
-    WISH: 110,
-    COULD: (width / 4)*2,
-    SHOULD: (width / 4)*3,
-	MUST: width - 110
+    WISH: width / 4,
+    COULD: width / 3,
+    SHOULD: width / 2,
+	MUST: 2 * width / 3
   };
 
   // @v4 strength to apply to the position forces
@@ -248,7 +248,8 @@ function bubbleChart() {
    * yearCenter of their data's year.
    */
   function splitBubbles(title,nodeforce) {
-    showYearTitles(title);
+    hideYearTitles()
+	showYearTitles(title);
 
     // @v4 Reset the 'x' force to draw the bubbles to their year centers
     simulation.force('x', d3.forceX().strength(forceStrength).x(nodeforce));
