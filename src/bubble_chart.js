@@ -380,6 +380,5 @@ function addCommas(nStr) {
 // Load the data.
 
 
-
 // setup the buttons.
 setupButtons();
