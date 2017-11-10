@@ -23,12 +23,24 @@ function bubbleChart() {
     DOING: { x: width / 2, y: height / 2 },
     TODO: { x: 2 * width / 3, y: height / 2 }
   };
+  
+  var priorCenters = {
+    WISH: { x: width / 3, y: height / 2 },
+    COULD: { x: width / 2, y: height / 2 },
+    SHOULD: { x: 2 * width / 3, y: height / 2 }
+  };
 
   // X locations of the year titles.
   var yearsTitleX = {
     DONE: 160,
     DOING: width / 2,
     TODO: width - 160
+  };
+  
+  var priorTitleX = {
+    WISH: 160,
+    COULD: width / 2,
+    SHOULD: width - 160
   };
 
   // @v4 strength to apply to the position forces
@@ -206,6 +218,9 @@ function bubbleChart() {
     return yearCenters[d.status].x;
   }
 
+  function nodePriorPos(d) {
+    return priorCenters[d.priority].x;
+  }
 
   /*
    * Sets visualization in "single group mode".
@@ -230,11 +245,11 @@ function bubbleChart() {
    * tick function is set to move nodes to the
    * yearCenter of their data's year.
    */
-  function splitBubbles() {
-    showYearTitles();
+  function splitBubbles(title,nodeforce) {
+    showYearTitles(title);
 
     // @v4 Reset the 'x' force to draw the bubbles to their year centers
-    simulation.force('x', d3.forceX().strength(forceStrength).x(nodeYearPos));
+    simulation.force('x', d3.forceX().strength(forceStrength).x(nodeforce));
 
     // @v4 We can reset the alpha value and restart the simulation
     simulation.alpha(1).restart();
@@ -250,21 +265,22 @@ function bubbleChart() {
   /*
    * Shows Year title displays.
    */
-  function showYearTitles() {
+  function showYearTitles(titles) {
     // Another way to do this would be to create
     // the year texts once and then just hide them.
-    var yearsData = d3.keys(yearsTitleX);
+    var yearsData = d3.keys(titles);
     var years = svg.selectAll('.status')
       .data(yearsData);
 
     years.enter().append('text')
       .attr('class', 'status')
-      .attr('x', function (d) { return yearsTitleX[d]; })
+      .attr('x', function (d) { return titles[d]; })
       .attr('y', 40)
       .attr('text-anchor', 'middle')
       .text(function (d) { return d; });
   }
 
+ 
 
   /*
    * Function called on mouseover to display the
@@ -310,8 +326,12 @@ function bubbleChart() {
    */
   chart.toggleDisplay = function (displayName) {
     if (displayName === 'status') {
-      splitBubbles();
-    } else {
+      splitBubbles(yearsTitleX,nodeYearPos);
+    }
+	else if (displayName === 'priority'){
+		splitBubbles(priorTitleX,nodePriorPos);
+	}
+	else {
       groupBubbles();
     }
   };
