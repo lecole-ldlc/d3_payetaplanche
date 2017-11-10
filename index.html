@@ -339,13 +339,11 @@
             draw_barchart(data, "#barchart2", false);
 			display(null, data);
 			$('#all').toggleClass('active');
+			$('#status').toggleClass('active');
+			$('#priority').toggleClass('active');
         });
     }
 
-    $(document).ready(function () {
-        regen();
-        $('select').material_select();
-    });
 </script>
 
 
