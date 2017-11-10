@@ -75,7 +75,7 @@ function bubbleChart() {
   // @v4 scales now have a flattened naming scheme
   var fillColor = d3.scaleOrdinal()
     .domain(['low', 'medium', 'high'])
-    .range(['#d84b2a', '#beccae', '#7aa25c']);
+    .range(['#1F77B4', '#FF7F0E', '#2CA02C']);
 
 
   /*
@@ -94,7 +94,7 @@ function bubbleChart() {
     // Use the max total_amount in the data as the max in the scale's domain
     // note we have to ensure the total_amount is a number.
     var maxAmount = d3.max(rawData, function (d) { return +d.time; });
-	var maxValues = rawData.length
+	var maxValues = rawData.length;
 
     // Sizes bubbles based on area.
     // @v4: new flattened scale names.
@@ -274,14 +274,17 @@ function bubbleChart() {
     // change outline to indicate hover state.
     d3.select(this).attr('stroke', 'black');
 
-    var content = '<span class="name">Title: </span><span class="value">' +
+    var content = '<span class="name">Nom: </span><span class="value">' +
                   d.name +
                   '</span><br/>' +
-                  '<span class="name">Amount: </span><span class="value">$' +
+                  '<span class="name">Temps: </span><span class="value">$' +
                   addCommas(d.value) +
                   '</span><br/>' +
-                  '<span class="name">Year: </span><span class="value">' +
+                  '<span class="name">Statut: </span><span class="value">' +
                   d.status +
+                  '</span><br/>' +
+                  '<span class="name">Priorité: </span><span class="value">' +
+                  d.priority +
                   '</span>';
 
     tooltip.showTooltip(content, d3.event);
