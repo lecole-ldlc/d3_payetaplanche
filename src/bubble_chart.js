@@ -98,7 +98,7 @@ function bubbleChart() {
     // Sizes bubbles based on area.
     // @v4: new flattened scale names.
     var radiusScale = d3.scalePow()
-      .exponent(0.5)
+      .exponent(3)
       .range([2, 85])
       .domain([0, maxAmount]);
 
