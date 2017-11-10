@@ -378,7 +378,8 @@ function addCommas(nStr) {
 }
 
 // Load the data.
-d3.csv('data/data_task_10.csv', display);
-
+$(document).ready(function () {
+	d3.csv($("#dataset").val(), display);
+});
 // setup the buttons.
 setupButtons();
